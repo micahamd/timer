@@ -1,3 +1,5 @@
+import csv
+from tkinter import filedialog
 import tkinter as tk
 from tkinter import colorchooser, simpledialog, messagebox  # Import simpledialog here
 from datetime import datetime, timedelta
@@ -14,7 +16,7 @@ class TimerApp:
         self.root.title("Timer App")
         self.data_storage = DataStorage()  # Instantiate DataStorage
         
-        self.visualize_button = tk.Button(root, text="Visualize Data", command=self.visualize_data,
+        self.visualize_button = tk.Button(root, text="Summarize data", command=self.visualize_data,
                                           relief='raised',
                                           activebackground='darkgrey', activeforeground='white')
         self.visualize_button.pack()
@@ -69,7 +71,6 @@ class TimerApp:
             self.pause_timer()
         else:
             self.start_timer()
-
 
     def start_timer(self):
         if not self.running:
@@ -170,7 +171,6 @@ class TimerApp:
         fg_color_info = colorchooser.askcolor(title="Choose font color")
         if fg_color_info is not None and fg_color_info[1] is not None:
             self.timer_label.config(fg=fg_color_info[1])
-
     
     def visualize_data(self):
         # Create a new window for displaying activities
@@ -180,6 +180,11 @@ class TimerApp:
         # Add a DateEntry widget for the start date
         self.start_date_entry = DateEntry(self.data_window)
         self.start_date_entry.grid(row=0, column=2)  # Place it in the first row, third column
+
+        # Add a 'Download data' button
+        self.download_button = tk.Button(self.data_window, text="Download data", command=self.download_data,activebackground='yellow', activeforeground='red')
+        
+        self.download_button.grid(row=1, column=3)  # Place it in the first row, fourth column
 
         # Bind a function to the DateEntry widget that is called when a new date is selected
         self.start_date_entry.bind("<<DateEntrySelected>>", self.on_date_selected)
@@ -191,9 +196,35 @@ class TimerApp:
 
         # Call update_data to display the data
         self.update_data()
-    
-    
-    
+        
+    def download_data(self):
+        # Get the selected start date
+        start_date = self.start_date_entry.get_date()
+
+        # Fetch the data
+        activities = self.data_storage.data.get('activities', {})
+
+        # Filter the data based on the selected date
+        filtered_data = []
+        for activity, logs in activities.items():
+            for log in logs:
+                log_start_date = datetime.strptime(log['start'], "%Y-%m-%d %H:%M:%S").date()
+                if log_start_date >= start_date:
+                    duration = timedelta(seconds=log['duration'])
+                    duration_str = "{:02}:{:02}".format(int(duration.total_seconds() // 3600), int((duration.total_seconds() % 3600) // 60))
+                    filtered_data.append([log_start_date.strftime("%d-%m-%Y"), activity, duration_str])
+
+        # Ask the user where to save the file
+        file_path = filedialog.asksaveasfilename(defaultextension=".csv", filetypes=[("CSV files", "*.csv")])
+        if not file_path:
+            return  # The user cancelled the dialog
+
+        # Write the data to a CSV file
+        with open(file_path, 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(["Date", "Activity", "Duration (HH:MM)"])  # Write the header
+            writer.writerows(filtered_data)  # Write the data
+
     def update_data(self):
         # Clear the existing data
         for widget in self.data_window.winfo_children():
@@ -233,10 +264,7 @@ class TimerApp:
     def on_date_selected(self, event):
         # Call the update_data function when a new date is selected
             self.update_data()
-    
-
-
-    
+        
     def update_goal(self, activity, new_goal):
         # Validate and update the goal in DataStorage
         try:
