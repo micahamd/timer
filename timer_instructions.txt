@@ -1,0 +1,29 @@
+
+This is what the app is required to do:
+
+1. Have a timer function with two input options: [START/PAUSE, STOP]. Above the buttons, there should be a timer display in HH:MM:SS:MS format that resets every 24 hours (synchronized with the system clock). The times at the end of every 24 hour become stored in a cache/data file. These can be accessed anytime from within the app for visualization in bar graph form. 
+
+2. Alongside the timer buttons and display, there should be a button called ACTIVITY. Clicking on this will open up a dropdown menu with three default activity labels (e.g., READ, WORKOUT), a second label stating (+ ADD ACTIVITY?) and a third label stating (x DELETE ACTIVITY?). Clicking on the second label will open a textbox in which the user can input a string. After pressing Enter, this will be added onto the list of activity labels. Clicking on the third label (x DELETE ACTIVITY?) will cause the activity label over which the mouse cursor hovers to be highlighted in red. Clicking on the highlighted label will then delete the activity label. All labels can be deleted, except for the second and third labels (for obvious reasons).
+
+3. When the user selects an ACTIVITY and presses the timer, the selected ACTIVITY will be displayed above the timer display and the resultant data will be stored as 'selected ACTIVITY-DATA'. If no ACTIVITY is selected and the timer is pressed, only the time will be displayed and the resultant data will be stored as 'unspecified ACTIVITY-DATA'. 
+
+4. After each 24 hour cycle, the previous 24 hour cycle's activity durations (including the 'unspecified category') will be stored. This can be displayed in a  bar chart if the user desires. The data will be retained for (at least) a year, so that users have the option to see summary bar charts of time spent on activities over days/weeks/months.
+
+5. This app should be self-contained, and deployable offline. We will make further tweaks to the UI once this basic app has been setup.
+
+---
+
+The basic app has been setup, and consists of the following modules:
+
+I'm building a timer app, with 4 .py files. These are respectively:
+
+1. time_main.py
+2. visualization.py
+3. activity_main.py
+4. data_storage. py
+
+I will upload them with questions as needed. My aim is to build a time-management application which should do the following:
+
+1. Tracks time allocated to different, customizable activities
+2. 
+
