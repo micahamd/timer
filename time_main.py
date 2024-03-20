@@ -7,6 +7,7 @@ from activity_main import ActivityManager
 from data_storage import DataStorage
 from visualization import display_activities_with_goals, calculate_daily_average
 from tkcalendar import DateEntry # Import DateEntry from tkcalendar module
+from tkinter import messagebox
 
 
 
@@ -42,7 +43,7 @@ class TimerApp:
 
         self.theme_button = tk.Button(root, text="Display Theme",
                                       command=self.change_theme,
-                                      relief='raised',bg='orange',fg='white',
+                                      relief='raised',bg='orange',fg='black',
                                       activebackground='brown', activeforeground='white')
         self.theme_button.grid(row=0, column=0)
 
@@ -66,6 +67,15 @@ class TimerApp:
 
         self.delete_activity_button = tk.Button(root, text="Delete Activity", command=self.delete_activity,bg='grey',fg='pink', relief='raised', activebackground='black', activeforeground='pink')
         self.delete_activity_button.grid(row=4,column=1)
+
+        # Add Help Button
+        self.help_button = tk.Button(root, text="Help", command=self.show_help,
+                                     relief='raised', bg='purple', fg='white',
+                                     activebackground='purple', activeforeground='white')
+        self.help_button.grid(row=5, column=0, columnspan=2)
+
+    def show_help(self):
+        messagebox.showinfo("Help", "Select an activity then start the timer.\nThis will be logged for each date, and can be downloaded as a CSV file after pressing 'Summarize data', then selecting 'Download data' in the new window.\nTo add/delete an activity, you have to manually type it in. After you have added/deleted an activity, restart the application to update the activity list.\nYou can also change the colors of the timer display.\nTo set a goal for an activity, enter the goal in the format HH:MM and press 'Update'.")
 
     def toggle_timer(self):
         if self.running:
@@ -193,8 +203,9 @@ class TimerApp:
 
         # Add column headers
         tk.Label(self.data_window, text="Activity").grid(row=1, column=0)
-        tk.Label(self.data_window, text="Daily Average").grid(row=1, column=1)
-        tk.Label(self.data_window, text="Enter Goal").grid(row=1, column=2) 
+        tk.Label(self.data_window, text="Daily Average\nsince Start Date").grid(row=1, column=1)
+        tk.Label(self.data_window, text="Enter a Goal in HH:MM").grid(row=1, column=2) 
+        tk.Label(self.data_window, text="Enter Start Date").grid(row=0, column=1) 
 
         # Call update_data to display the data
         self.update_data()
