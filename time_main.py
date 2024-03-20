@@ -19,30 +19,32 @@ class TimerApp:
         self.visualize_button = tk.Button(root, text="Summarize data", command=self.visualize_data,
                                           relief='raised',
                                           activebackground='darkgrey', activeforeground='white')
-        self.visualize_button.pack()
+        
+        self.visualize_button.config(fg="black", bg="white", activeforeground="black", activebackground="pink")
+
+        self.visualize_button.grid(row=0, column=1, columnspan=2)
         self.current_activity_start = None
 
-        self.timer_label = tk.Label(root, text="00:00:00:000", font=("Arial", 30))
-        self.timer_label.pack()
+        self.timer_label = tk.Label(root, text="00:00:00:000", font=("Arial", 30),bg='maroon',fg='yellow')
+        self.timer_label.grid(row=1, column=0, columnspan=2)
 
         self.start_pause_button = tk.Button(root, text="Start/Pause",
                                             command=self.toggle_timer, relief='raised',
                                             activebackground='lightgreen', activeforeground='black',
-                                            bg='green', fg='white')
-        
-        self.start_pause_button.pack()
+                                            bg='green', fg='white',width=10,height=2)
+        self.start_pause_button.grid(row=2, column=0)  # Place it in the first row, first column
 
         self.stop_button = tk.Button(root, text="Stop",
                                      command=self.stop_timer, relief='raised',
-                                     activebackground='orange', activeforeground='black',
-                                     bg='red', fg='white')
-        self.stop_button.pack()
+                                     activebackground='maroon', activeforeground='white',
+                                     bg='red', fg='white',width=10,height=2)
+        self.stop_button.grid(row=2, column=1)  # Place it in the first row, second column
 
         self.theme_button = tk.Button(root, text="Display Theme",
                                       command=self.change_theme,
-                                      relief='raised',
-                                      activebackground='darkgrey', activeforeground='white')
-        self.theme_button.pack()
+                                      relief='raised',bg='orange',fg='white',
+                                      activebackground='brown', activeforeground='white')
+        self.theme_button.grid(row=0, column=0)
 
         self.running = False
         self.timer_start = None
@@ -53,18 +55,17 @@ class TimerApp:
         self.activity_var = tk.StringVar(root)
         self.activity_var.set("Select Activity")  # default value
         self.activity_menu = tk.OptionMenu(root, self.activity_var, *self.activity_manager.get_activities())
-        self.activity_menu.pack()
+        self.activity_menu.config(fg="black", bg="yellow", activeforeground="pink", activebackground="black")
+        self.activity_menu.grid(row=3, column=0,columnspan=2)
 
         # Add and Delete Activity Buttons
-        self.add_activity_button = tk.Button(root, text="+ Add Activity", command=self.add_activity,
-                                             relief='raised',
-                                             activebackground='darkgrey', activeforeground='white')
-        self.add_activity_button.pack()
+        self.add_activity_button = tk.Button(root, text="Add Activity", command=self.add_activity,
+                                             relief='raised',bg='blue',fg='white',
+                                             activebackground='darkblue', activeforeground='white')
+        self.add_activity_button.grid(row=4,column=0)
 
-        self.delete_activity_button = tk.Button(root, text="x Delete Activity", command=self.delete_activity,
-                                                relief='raised',
-                                                activebackground='black', activeforeground='white')
-        self.delete_activity_button.pack()
+        self.delete_activity_button = tk.Button(root, text="Delete Activity", command=self.delete_activity,bg='grey',fg='pink', relief='raised', activebackground='black', activeforeground='pink')
+        self.delete_activity_button.grid(row=4,column=1)
 
     def toggle_timer(self):
         if self.running:
@@ -182,7 +183,8 @@ class TimerApp:
         self.start_date_entry.grid(row=0, column=2)  # Place it in the first row, third column
 
         # Add a 'Download data' button
-        self.download_button = tk.Button(self.data_window, text="Download data", command=self.download_data,activebackground='yellow', activeforeground='red')
+        self.download_button = tk.Button(self.data_window, text="Download data", command=self.download_data,activebackground='red', activeforeground='black', relief='raised',
+                                         bg='pink', fg='brown')
         
         self.download_button.grid(row=1, column=3)  # Place it in the first row, fourth column
 
